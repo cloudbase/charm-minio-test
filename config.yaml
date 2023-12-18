@@ -1,0 +1,33 @@
+options:
+  deb-url:
+    type: string
+    description: The URL to the MinIO Debian package.
+    default: "https://dl.min.io/server/minio/release/linux-amd64/minio.deb"
+  address:
+    type: string
+    description: The address used to connect to the object storage.
+    default: ":9000"
+  console-address:
+    type: string
+    description: The address used to connect to MinIO console.
+    default: ":9001"
+  region:
+    type: string
+    description: The region used to connect to the object storage.
+    default: "eu-west-1"
+  root-user:
+    type: string
+    description: The MinIO root user name.
+    default: "root"
+  root-password:
+    type: string
+    description: The MinIO root user password.
+    default: "root-user-password-123"
+  bucket:
+    type: string
+    description: The bucket/container name delivered by the provider.
+    default: ""
+  s3-uri-style:
+    type: string
+    description: The S3 protocol specific bucket path lookup type.
+    default: ""

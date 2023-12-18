@@ -1,0 +1,23 @@
+name: minio-test
+summary: Simple MinIO charm for testing purposes.
+description: |
+  Simple MinIO charm for testing purposes. This is meant to be used in the
+  integration tests bundles.
+
+docs: https://github.com/ionutbalutoiu/minio-test
+source: https://github.com/ionutbalutoiu/minio-test
+issues: https://github.com/ionutbalutoiu/minio-test/issues
+maintainers:
+  - Ionut Balutoiu <ibalutoiu@cloudbasesolutions.com>
+
+bases:
+  - name: ubuntu
+    channel: 22.04/stable
+
+provides:
+  s3-credentials:
+    interface: s3
+
+peers:
+  peers:
+    interface: minio-peer
