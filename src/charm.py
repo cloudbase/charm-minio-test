@@ -41,21 +41,26 @@ class MinioTestCharm(ops_charm.CharmBase):
 
         self.framework.observe(self.on.install, self._on_install)
         self.framework.observe(self.on.config_changed, self._on_config_changed)
-        self.framework.observe(self.s3_provider.on.credentials_requested,
-                               self._on_credential_requested)
+        self.framework.observe(
+            self.s3_provider.on.credentials_requested,
+            self._on_credential_requested,
+        )
 
     def _on_install(self, event):
         logging.info("Installing MinIO")
         minio_deb_file = "/tmp/minio.deb"
-        request.urlretrieve(url=self.config["deb-url"],
-                            filename=minio_deb_file)
+        request.urlretrieve(
+            url=self.config["deb-url"], filename=minio_deb_file
+        )
         subprocess.check_call(["dpkg", "-i", minio_deb_file])
         self._add_system_group()
         self._add_system_user()
         os.makedirs(self.MINIO_DATA_DIR, exist_ok=True)
-        shutil.chown(self.MINIO_DATA_DIR,
-                     user=self.MINIO_SYSTEM_USER,
-                     group=self.MINIO_SYSTEM_GROUP)
+        shutil.chown(
+            self.MINIO_DATA_DIR,
+            user=self.MINIO_SYSTEM_USER,
+            group=self.MINIO_SYSTEM_GROUP,
+        )
         subprocess.check_call(["systemctl", "enable", self.SERVICE_NAME])
 
     def _on_config_changed(self, event):
@@ -69,7 +74,8 @@ class MinioTestCharm(ops_charm.CharmBase):
 
         binding = self.model.get_binding(event.relation)
         endpoint = "http://{}:{}".format(
-            str(binding.network.bind_address), self.config["port"],
+            str(binding.network.bind_address),
+            self.config["port"],
         )
         conn_data = {
             "bucket": self.config["bucket"] or event.bucket,
@@ -86,20 +92,29 @@ class MinioTestCharm(ops_charm.CharmBase):
     def _add_system_group(self):
         existing_groups = [g.gr_name for g in grp.getgrall()]
         if self.MINIO_SYSTEM_GROUP in existing_groups:
-            logger.info("Group {} already exists".format(
-                self.MINIO_SYSTEM_GROUP))
+            logger.info(
+                "Group {} already exists".format(self.MINIO_SYSTEM_GROUP)
+            )
             return
         subprocess.check_call(["groupadd", "-r", self.MINIO_SYSTEM_GROUP])
 
     def _add_system_user(self):
         existing_users = [u.pw_name for u in pwd.getpwall()]
         if self.MINIO_SYSTEM_USER in existing_users:
-            logger.info("User {} already exists".format(
-                self.MINIO_SYSTEM_USER))
+            logger.info(
+                "User {} already exists".format(self.MINIO_SYSTEM_USER)
+            )
             return
-        subprocess.check_call(["useradd", "-M", "-r",
-                               "-g", self.MINIO_SYSTEM_GROUP,
-                               self.MINIO_SYSTEM_USER])
+        subprocess.check_call(
+            [
+                "useradd",
+                "-M",
+                "-r",
+                "-g",
+                self.MINIO_SYSTEM_GROUP,
+                self.MINIO_SYSTEM_USER,
+            ]
+        )
 
     def _write_systemd_env_file(self):
         logger.info("Writing systemd environment file")
