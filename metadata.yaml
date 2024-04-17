@@ -4,9 +4,9 @@ description: |
   Simple MinIO charm for testing purposes. This is meant to be used in the
   integration tests bundles.
 
-docs: https://github.com/ionutbalutoiu/charm-minio-test
-source: https://github.com/ionutbalutoiu/charm-minio-test
-issues: https://github.com/ionutbalutoiu/charm-minio-test/issues
+docs: https://github.com/cloudbase/charm-minio-test
+source: https://github.com/cloudbase/charm-minio-test
+issues: https://github.com/cloudbase/charm-minio-test/issues
 maintainers:
   - Ionut Balutoiu <ibalutoiu@cloudbasesolutions.com>
 
